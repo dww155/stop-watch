@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        :root{
+            --color-neon-cyan: #00FFFF;
+            --color-neon-red: #FF073A;
+            --color-neon-green: #39FF14;
+            --color-neon-yellow: #FFFF33;
+        }
+
+        body{
+            background-color: #111;
+        }
+
+        #container{
+            height: 100vh;
+            display: flex;
+            user-select: none;
+        }
+        #clockbox{
+            margin: auto;
+            background-color: #333;
+            border: 15px solid var(--color-neon-red);
+            border-radius: 360px;
+            box-shadow: 0px 0px 20px var(--color-neon-red);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .clockUnit{
+            /* border:1px solid #999; */
+            box-shadow: inset 0 0 10px #00FFFF;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--color-neon-cyan);
+            text-shadow: 0 0 10px var(--color-neon-cyan);
+            font-size: 50px;
+            margin: 10px;
+            transition: .2s ease;
+        }
+        .clockNumber{
+            display: flex;
+        }
+        .note{
+            color: #999;
+            position: absolute;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="note">
+            <h3>
+                click to stop;
+            </h3>
+            <h3>
+                double click to reset
+            </h3>
+        </div>
+        <div id="clockbox">
+            <div class="clockUnit">
+                <h1 class="clockNumber" id="hour">
+                    00
+                </h1>
+            </div>
+            <div class="clockUnit">
+                <h1 class="clockNumber" id="minute">
+                    00
+                </h1>
+            </div>
+            <div class="clockUnit">
+                <h1 class="clockNumber" id="second">
+                    00
+                </h1>
+            </div>
+            <div class="clockUnit">
+                <h1 class="clockNumber" id="milisecond">
+                    00
+                </h1>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var ms = 0;
+    var hourBox = document.getElementById("hour");
+    var minuteBox = document.getElementById("minute");
+    var secondBox = document.getElementById("second");
+    var milisecondBox = document.getElementById("milisecond");
+    var running = true;
+
+    function renderClock() {
+        let tmp = ms;
+        
+        milisecondBox.innerText = Math.floor(tmp%100).toString().padStart(2, '0');
+        tmp = tmp / 100;
+        
+        second.innerText = Math.floor(tmp%60).toString().padStart(2,'0');
+        tmp = tmp / 60;
+
+        minuteBox.innerText = Math.floor(tmp%60).toString().padStart(2,'0');
+        tmp = tmp / 60;
+
+        hourBox.innerHTML = Math.floor(tmp).toString().padStart(2,'0');
+    }
+
+    let ascClock = setInterval(() => {
+        ++ms;
+        renderClock();
+    }, 10)
+
+    document.addEventListener("click", () => {
+        if (running) {
+            clearInterval(ascClock);
+            running = false;
+        }
+        else {
+            ascClock = setInterval(() => {
+                ++ms;
+                renderClock();
+            }, 10)
+            running = true;
+        }
+    })
+
+    document.addEventListener("dblclick", () => {
+        ms = 0;
+    })
+</script>
+</html>
